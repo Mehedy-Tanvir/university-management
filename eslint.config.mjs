@@ -7,7 +7,12 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 export default [
   {
     files: ['**/*.{js,mjs,cjs,ts}'],
-    languageOptions: { globals: globals.browser },
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        process: 'readonly',
+      },
+    },
     rules: {
       eqeqeq: 'off',
       'no-unused-vars': 'error',
@@ -23,9 +28,6 @@ export default [
           allowTaggedTemplates: true,
         },
       ],
-    },
-    globals: {
-      process: 'readonly',
     },
   },
   {
