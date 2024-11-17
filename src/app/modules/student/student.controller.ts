@@ -3,8 +3,8 @@ import { StudentServices } from './student.service';
 
 const createStudent: RequestHandler = async (req, res) => {
   try {
-    const student = req.body;
-    const result = await StudentServices.createStudentIntoDB(student);
+    const { student: studentData } = req.body;
+    const result = await StudentServices.createStudentIntoDB(studentData);
 
     // Send a response without returning it
     res.status(200).json({
