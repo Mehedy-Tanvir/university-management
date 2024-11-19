@@ -29,11 +29,11 @@ const createStudent: RequestHandler = async (req, res) => {
       message: 'Student is created successfully!',
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: 'Something went wrong!',
+      message: error.message || 'Something went wrong!',
       data: error,
     });
   }
