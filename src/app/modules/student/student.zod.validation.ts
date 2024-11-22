@@ -46,6 +46,7 @@ const guardianSchema = z.object({
 // Main Student Zod Schema
 const studentValidationSchema = z.object({
   id: z.string().min(1, { message: 'Student ID is required' }),
+  password: z.string(),
   name: userNameSchema,
   gender: z.enum(['male', 'female', 'other'], {
     required_error: 'Gender is required',
