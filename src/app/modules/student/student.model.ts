@@ -9,9 +9,6 @@ import {
   TUserName,
 } from './student.interface';
 
-import bcrypt from 'bcrypt';
-import config from '../../config/index';
-
 const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
@@ -58,7 +55,12 @@ const guardianSchema = new Schema<TGuardian>({
 const studentSchema = new Schema<TStudent, StudentModel>(
   {
     id: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'User id is required'],
+      unique: true,
+      ref: 'User',
+    },
     name: {
       type: userNameSchema,
       required: true,
@@ -97,11 +99,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: true,
     },
     profileImage: { type: String },
-    isActive: {
-      type: String,
-      enum: ['active', 'blocked'],
-      default: 'active',
-    },
   },
   {
     toJSON: {
@@ -115,28 +112,10 @@ studentSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 
-// pre save middleware or hook : will work on create() save()
-studentSchema.pre('save', async function () {
-  // console.log(this, 'pre hook: we will save the data');
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const user = this;
-  // hashing password and save into db
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds),
-  );
-});
-
-// post save middleware or hook
-studentSchema.post('save', function (doc, next) {
-  doc.password = '';
-  next();
-  // console.log(this, 'post hook: we saved the data');
-});
-
 // query middleware
 studentSchema.pre('find', function (next) {
   console.log(this);
+  next();
 });
 
 // creating a custom static method
