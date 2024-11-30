@@ -1,39 +1,33 @@
-import { NextFunction, RequestHandler } from 'express';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { StudentServices } from './student.service';
 import sendResponse from '../../utils/sendResponse';
+import { catchAsync } from '../../utils/catchAsync';
 
-const getAllStudents: RequestHandler = async (req, res, next: NextFunction) => {
-  try {
-    const result = await StudentServices.getAllStudentsFromDB();
+const getAllStudents = catchAsync(async (req, res, next) => {
+  const result = await StudentServices.getAllStudentsFromDB();
 
-    // Send a response without returning it
-    sendResponse(res, {
-      success: true,
-      statusCode: 200,
-      message: 'Students fetched successfully!',
-      data: result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  // Send a response without returning it
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: 'Students fetched successfully!',
+    data: result,
+  });
+});
 
-const getStudentById: RequestHandler = async (req, res, next: NextFunction) => {
-  try {
-    const { studentId } = req.params;
-    const result = await StudentServices.getStudentById(studentId);
+const getStudentById = catchAsync(async (req, res, next) => {
+  const { studentId } = req.params;
+  const result = await StudentServices.getStudentById(studentId);
 
-    // Send a response without returning it
-    sendResponse(res, {
-      success: true,
-      statusCode: 200,
-      message: 'Students fetched successfully!',
-      data: result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  // Send a response without returning it
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: 'Students fetched successfully!',
+    data: result,
+  });
+});
 
 export const StudentControllers = {
   getAllStudents,
