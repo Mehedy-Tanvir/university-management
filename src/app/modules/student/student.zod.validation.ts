@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // UserName Zod Schema
-const userNameSchema = z.object({
+const userNameValidationSchema = z.object({
   firstName: z
     .string()
     .trim()
@@ -16,7 +16,7 @@ const userNameSchema = z.object({
 });
 
 // Local Guardian Zod Schema
-const localGuardianSchema = z.object({
+const localGuardianValidationSchema = z.object({
   name: z.string().min(1, { message: 'Local guardian name is required' }),
   occupation: z.string().min(1, { message: 'Occupation is required' }),
   contactNo: z.string().regex(/^\d{10,15}$/, {
@@ -26,7 +26,7 @@ const localGuardianSchema = z.object({
 });
 
 // Guardian Zod Schema
-const guardianSchema = z.object({
+const guardianValidationSchema = z.object({
   fatherName: z.string().min(1, { message: "Father's name is required" }),
   fatherOccupation: z
     .string()
@@ -44,11 +44,11 @@ const guardianSchema = z.object({
 });
 
 // Main Student Zod Schema
-const studentValidationSchema = z.object({
+const createStudentValidationSchema = z.object({
   body: z.object({
     password: z.string(),
     student: z.object({
-      name: userNameSchema,
+      name: userNameValidationSchema,
       gender: z.enum(['male', 'female', 'other'], {
         required_error: 'Gender is required',
         invalid_type_error: 'Gender must be one of male, female, or other',
@@ -78,8 +78,8 @@ const studentValidationSchema = z.object({
       permanentAddress: z
         .string()
         .min(1, { message: 'Permanent address is required' }),
-      guardian: guardianSchema,
-      localGuardian: localGuardianSchema,
+      guardian: guardianValidationSchema,
+      localGuardian: localGuardianValidationSchema,
       profileImage: z
         .string()
         .url({ message: 'Profile image must be a valid URL' })
@@ -88,4 +88,4 @@ const studentValidationSchema = z.object({
   }),
 });
 
-export const studentValidations = { studentValidationSchema };
+export const studentValidations = { createStudentValidationSchema };
