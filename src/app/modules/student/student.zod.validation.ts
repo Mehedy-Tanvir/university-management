@@ -53,7 +53,7 @@ const createStudentValidationSchema = z.object({
         required_error: 'Gender is required',
         invalid_type_error: 'Gender must be one of male, female, or other',
       }),
-      dateOfBirth: z.date().optional(),
+      dateOfBirth: z.string().optional(),
       email: z
         .string()
         .email({ message: 'Must be a valid email address' })
@@ -79,6 +79,7 @@ const createStudentValidationSchema = z.object({
         .string()
         .url({ message: 'Profile image must be a valid URL' })
         .optional(),
+      admissionSemester: z.string(),
     }),
   }),
 });

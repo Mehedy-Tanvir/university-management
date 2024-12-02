@@ -2,7 +2,7 @@ import express from 'express';
 import { AcademicSemesterControllers } from './academicSemester.controller';
 import validateRequest from '../../middlewares/validateRequest';
 import { AcademicSemesterValidations } from './academicSemester.validation';
-// import { StudentControllers } from './student.controller';
+
 const router = express.Router();
 
 router.post(
@@ -13,7 +13,19 @@ router.post(
   AcademicSemesterControllers.createAcademicSemester,
 );
 
-// router.get('/get-students', StudentControllers.getAllStudents);
-// router.get('/get-student/:studentId', StudentControllers.getStudentById);
+router.get(
+  '/:semesterId',
+  AcademicSemesterControllers.getSingleAcademicSemester,
+);
+
+router.patch(
+  '/:semesterId',
+  validateRequest(
+    AcademicSemesterValidations.updateAcademicSemesterValidationSchema,
+  ),
+  AcademicSemesterControllers.updateAcademicSemester,
+);
+
+router.get('/', AcademicSemesterControllers.getAllAcademicSemesters);
 
 export const AcademicSemesterRoutes = router;
