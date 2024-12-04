@@ -80,6 +80,7 @@ const createStudentValidationSchema = z.object({
         .url({ message: 'Profile image must be a valid URL' })
         .optional(),
       admissionSemester: z.string(),
+      academicDepartment: z.string(),
     }),
   }),
 });
