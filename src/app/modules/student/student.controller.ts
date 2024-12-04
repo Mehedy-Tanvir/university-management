@@ -1,35 +1,59 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { StudentServices } from './student.service';
+import { RequestHandler } from 'express';
 import sendResponse from '../../utils/sendResponse';
+import { StudentServices } from './student.service';
 import { catchAsync } from '../../utils/catchAsync';
 
-const getAllStudents = catchAsync(async (req, res, next) => {
-  const result = await StudentServices.getAllStudentsFromDB();
+const getSingleStudent = catchAsync(async (req, res) => {
+  const { studentId } = req.params;
+  const result = await StudentServices.getSingleStudentFromDB(studentId);
 
-  // Send a response without returning it
   sendResponse(res, {
-    success: true,
     statusCode: 200,
-    message: 'Students fetched successfully!',
+    success: true,
+    message: 'Student is retrieved succesfully',
     data: result,
   });
 });
 
-const getStudentById = catchAsync(async (req, res, next) => {
-  const { studentId } = req.params;
-  const result = await StudentServices.getStudentById(studentId);
+const getAllStudents: RequestHandler = catchAsync(async (req, res) => {
+  const result = await StudentServices.getAllStudentsFromDB();
 
-  // Send a response without returning it
   sendResponse(res, {
-    success: true,
     statusCode: 200,
-    message: 'Students fetched successfully!',
+    success: true,
+    message: 'Student are retrieved succesfully',
+    data: result,
+  });
+});
+
+const updateStudent = catchAsync(async (req, res) => {
+  const { studentId } = req.params;
+  const { student } = req.body;
+  const result = await StudentServices.updateStudentIntoDB(studentId, student);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Student is updated succesfully',
+    data: result,
+  });
+});
+
+const deleteStudent = catchAsync(async (req, res) => {
+  const { studentId } = req.params;
+  const result = await StudentServices.deleteStudentFromDB(studentId);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Student is deleted succesfully',
     data: result,
   });
 });
 
 export const StudentControllers = {
   getAllStudents,
-  getStudentById,
+  getSingleStudent,
+  deleteStudent,
+  updateStudent,
 };
