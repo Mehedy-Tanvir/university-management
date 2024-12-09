@@ -15,7 +15,7 @@ const globalErrorHandler = (
   req: Request,
   res: Response,
   next: NextFunction,
-): Response => {
+): void => {
   let statusCode = 500;
   let message = 'Something went wrong!';
 
@@ -56,7 +56,7 @@ const globalErrorHandler = (
       },
     ];
   } else if (err instanceof Error) {
-    message = err?.message;
+    message = err.message;
     errorSources = [
       {
         path: '',
@@ -65,7 +65,7 @@ const globalErrorHandler = (
     ];
   }
 
-  return res.status(statusCode).json({
+  res.status(statusCode).json({
     success: false,
     message,
     errorSources,
