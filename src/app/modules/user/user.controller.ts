@@ -1,12 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { UserServices } from './user.service';
 import sendResponse from '../../utils/sendResponse';
+import { UserServices } from './user.service';
 import { catchAsync } from '../../utils/catchAsync';
 
 const createStudent = catchAsync(async (req, res) => {
   const { password, student: studentData } = req.body;
 
-  const result = await UserServices.createStudentIntoDB(password, studentData);
+  const result = await UserServices.createStudentIntoDB(
+    req.file,
+    password,
+    studentData,
+  );
 
   sendResponse(res, {
     statusCode: 200,
@@ -19,7 +22,11 @@ const createStudent = catchAsync(async (req, res) => {
 const createFaculty = catchAsync(async (req, res) => {
   const { password, faculty: facultyData } = req.body;
 
-  const result = await UserServices.createFacultyIntoDB(password, facultyData);
+  const result = await UserServices.createFacultyIntoDB(
+    req.file,
+    password,
+    facultyData,
+  );
 
   sendResponse(res, {
     statusCode: 200,
@@ -32,7 +39,11 @@ const createFaculty = catchAsync(async (req, res) => {
 const createAdmin = catchAsync(async (req, res) => {
   const { password, admin: adminData } = req.body;
 
-  const result = await UserServices.createAdminIntoDB(password, adminData);
+  const result = await UserServices.createAdminIntoDB(
+    req.file,
+    password,
+    adminData,
+  );
 
   sendResponse(res, {
     statusCode: 200,
