@@ -12,7 +12,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
 
     // checking if the token is missing
     if (!token) {
-      throw new AppError(403, 'You are not authorized!');
+      throw new AppError(401, 'You are not authorized!');
     }
 
     // checking if the given token is valid
@@ -51,14 +51,14 @@ const auth = (...requiredRoles: TUserRole[]) => {
         iat as number,
       )
     ) {
-      throw new AppError(403, 'You are not authorized !');
+      throw new AppError(401, 'You are not authorized !');
     }
 
     if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(403, 'You are not authorized  hi!');
+      throw new AppError(401, 'You are not authorized  hi!');
     }
 
-    req.user = decoded as JwtPayload;
+    req.user = decoded as JwtPayload & { role: string };
     next();
   });
 };
